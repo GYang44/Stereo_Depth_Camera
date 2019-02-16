@@ -6,24 +6,20 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class DepthCamera : SnapshotCamera
 {
+    public Shader depthShader;
 
     // Start is called before the first frame update
     void Awake()
     {
         snapCam = GetComponent<Camera>();
-        if (snapCam.targetTexture == null)
-        {
-            snapCam.targetTexture = new RenderTexture(width, height, 24, RenderTextureFormat.Depth);
-            snapCam.depthTextureMode = DepthTextureMode.None;
 
-            snapCam.SetReplacementShader(Shader.Find("Hidden/Camera-CustomDepthTexture"), "RenderType");
-            Shader.SetGlobalTexture("_GBuffer", snapCam.targetTexture);
-        }
-        else
-        {
-            width = snapCam.targetTexture.width;
-            height = snapCam.targetTexture.height;
-        }
+        snapCam.SetReplacementShader(depthShader, "Opaque");
+        Shader.SetGlobalTexture("_GBuffer", snapCam.targetTexture);
+        Debug.Log("shader replaced");
+       
+        width = snapCam.targetTexture.width;
+        height = snapCam.targetTexture.height;
+
         snapCam.gameObject.SetActive(false);
 /*
         private void Awake()

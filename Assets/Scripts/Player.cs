@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //stereoSnapCam.CallTakeSnapshot();
+            stereoSnapCam.CallTakeSnapshot();
             depthCam.CallTakeSnapshot();
         }
     }
