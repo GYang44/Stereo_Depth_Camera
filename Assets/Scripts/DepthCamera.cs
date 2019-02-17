@@ -13,7 +13,7 @@ public class DepthCamera : SnapshotCamera
     {
         snapCam = GetComponent<Camera>();
 
-        snapCam.SetReplacementShader(depthShader, "Opaque");
+        snapCam.SetReplacementShader(depthShader, "");
         Shader.SetGlobalTexture("_GBuffer", snapCam.targetTexture);
         Debug.Log("shader replaced");
        
@@ -21,19 +21,7 @@ public class DepthCamera : SnapshotCamera
         height = snapCam.targetTexture.height;
 
         snapCam.gameObject.SetActive(false);
-/*
-        private void Awake()
-        {
-            camera.CopyFrom(Camera.main);
 
-            var target = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.Depth);
-            camera.targetTexture = target;
-            camera.depthTextureMode = DepthTextureMode.None;
-
-            camera.SetReplacementShader(Shader.Find("Hidden/Camera-CustomDepthTexture"), "RenderType");
-            Shader.SetGlobalTexture("_GBuffer", target);
-        }
-        */
     }
     // Update is called once per frame
  

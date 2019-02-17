@@ -48,7 +48,7 @@ Shader "Hidden/Show Depth"
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float invert = 1 - i.depth;
-				return fixed4(invert, invert, invert, 1) * _Color;
+				return fixed4(invert, invert, invert, 1);
 			}
 			ENDCG
 		}
