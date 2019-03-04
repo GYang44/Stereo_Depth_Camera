@@ -41,7 +41,7 @@ Shader "Hidden/Show Depth"
 				float3 pos;
 				pos = UnityObjectToViewPos(v.vertex);
 				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.depth = pow( pow(pos.x,2) + pow(pos.y, 2) + pow(pos.z, 2), 0.5) *_ProjectionParams.w;
+				o.depth = pow( pow(pos.x,2) + pow(pos.y, 2) + pow(pos.z, 2), 0.5) *_ProjectionParams.w * 1.2;
 				return o;
 			}
 			
@@ -50,6 +50,7 @@ Shader "Hidden/Show Depth"
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float invert = 1 - i.depth;
+			unity_AmbientSky = fixed4(0, 0, 0, 0);
 				return fixed4(invert, invert, invert, 1);
 			}
 			ENDCG
