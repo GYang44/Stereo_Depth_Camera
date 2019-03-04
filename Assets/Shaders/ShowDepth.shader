@@ -38,8 +38,10 @@ Shader "Hidden/Show Depth"
 			v2f vert (appdata v)
 			{
 				v2f o;
+				float3 pos;
+				pos = UnityObjectToViewPos(v.vertex);
 				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.depth = -mul(UNITY_MATRIX_MV, v.vertex).z *_ProjectionParams.w;
+				o.depth = pow( pow(pos.x,2) + pow(pos.y, 2) + pow(pos.z, 2), 0.5) *_ProjectionParams.w;
 				return o;
 			}
 			
