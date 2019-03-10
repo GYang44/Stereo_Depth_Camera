@@ -26,12 +26,14 @@ public class SmoothMouseLook : MonoBehaviour {
 	float rotAverageY = 0F;
  
 	public float frameCounter = 20;
+
+    public float moveSpeed = 20F;
  
 	Quaternion originalRotation;
  
 	void Update ()
 	{
-		if (axes == RotationAxes.MouseXAndY)
+        if (axes == RotationAxes.MouseXAndY)
 		{			
 			rotAverageY = 0f;
 			rotAverageX = 0f;
@@ -109,11 +111,34 @@ public class SmoothMouseLook : MonoBehaviour {
 			Quaternion yQuaternion = Quaternion.AngleAxis (rotAverageY, Vector3.left);
 			transform.localRotation = originalRotation * yQuaternion;
 		}
-	}
+
+        Vector3 pos = transform.position;
+
+        if (Input.GetKey("w"))
+        {
+            pos.z += moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey("s"))
+        {
+            pos.z -= moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey("d"))
+        {
+            pos.x += moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey("a"))
+        {
+            pos.x -= moveSpeed * Time.deltaTime;
+        }
+
+
+        transform.position = pos;
+
+    }
  
 	void Start ()
 	{		
-                Rigidbody rb = GetComponent<Rigidbody>();	
+        Rigidbody rb = GetComponent<Rigidbody>();	
 		if (rb)
 			rb.freezeRotation = true;
 		originalRotation = transform.localRotation;

@@ -15,7 +15,6 @@ public class DepthCamera : SnapshotCamera
 
         snapCam.SetReplacementShader(depthShader, "");
         Shader.SetGlobalTexture("_GBuffer", snapCam.targetTexture);
-        Debug.Log("shader replaced");
        
         width = snapCam.targetTexture.width;
         height = snapCam.targetTexture.height;

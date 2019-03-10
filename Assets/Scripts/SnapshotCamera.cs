@@ -49,7 +49,6 @@ public class SnapshotCamera : MonoBehaviour
             RenderTexture.active = snapCam.targetTexture;
             snapshot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
             System.IO.File.WriteAllBytes(SnapshotName(), snapshot.EncodeToPNG());
-            Debug.Log("Snapshot taken!");
             snapCam.gameObject.SetActive(false);
         }
     }
