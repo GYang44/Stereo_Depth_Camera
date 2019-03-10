@@ -65,70 +65,29 @@ public class SmoothMouseLook : MonoBehaviour {
 			rotAverageX = ClampAngle (rotAverageX, minimumX, maximumX);
  
 			Quaternion yQuaternion = Quaternion.AngleAxis (rotAverageY, Vector3.left);
-			Quaternion xQuaternion = Quaternion.AngleAxis (rotAverageX, Vector3.up);
- 
-			transform.localRotation = originalRotation * xQuaternion * yQuaternion;
-		}
-		else if (axes == RotationAxes.MouseX)
-		{			
-			rotAverageX = 0f;
- 
-			rotationX += Input.GetAxis("Mouse X") * sensitivityX;
- 
-			rotArrayX.Add(rotationX);
- 
-			if (rotArrayX.Count >= frameCounter) {
-				rotArrayX.RemoveAt(0);
-			}
-			for(int i = 0; i < rotArrayX.Count; i++) {
-				rotAverageX += rotArrayX[i];
-			}
-			rotAverageX /= rotArrayX.Count;
- 
-			rotAverageX = ClampAngle (rotAverageX, minimumX, maximumX);
- 
-			Quaternion xQuaternion = Quaternion.AngleAxis (rotAverageX, Vector3.up);
-			transform.localRotation = originalRotation * xQuaternion;			
-		}
-		else
-		{			
-			rotAverageY = 0f;
- 
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
- 
-			rotArrayY.Add(rotationY);
- 
-			if (rotArrayY.Count >= frameCounter) {
-				rotArrayY.RemoveAt(0);
-			}
-			for(int j = 0; j < rotArrayY.Count; j++) {
-				rotAverageY += rotArrayY[j];
-			}
-			rotAverageY /= rotArrayY.Count;
- 
-			rotAverageY = ClampAngle (rotAverageY, minimumY, maximumY);
- 
-			Quaternion yQuaternion = Quaternion.AngleAxis (rotAverageY, Vector3.left);
+             
 			transform.localRotation = originalRotation * yQuaternion;
+            transform.RotateAround(transform.position, Vector3.up, rotAverageX);
 		}
+		
 
         Vector3 pos = transform.position;
 
         if (Input.GetKey("w"))
         {
-            pos.z += moveSpeed * Time.deltaTime;
+            pos += transform.TransformDirection(Vector3.forward * moveSpeed * Time.deltaTime);
         }
         if (Input.GetKey("s"))
         {
-            pos.z -= moveSpeed * Time.deltaTime;
+            pos += transform.TransformDirection(Vector3.back * moveSpeed * Time.deltaTime);
         }
         if (Input.GetKey("d"))
         {
-            pos.x += moveSpeed * Time.deltaTime;
+            pos += transform.TransformDirection(Vector3.right * moveSpeed * Time.deltaTime);
         }
         if (Input.GetKey("a"))
         {
-            pos.x -= moveSpeed * Time.deltaTime;
+            pos += transform.TransformDirection(Vector3.left * moveSpeed * Time.deltaTime);
         }
 
 
