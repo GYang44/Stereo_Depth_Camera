@@ -10,6 +10,13 @@ public class Player : SmoothMouseLook
     public DepthCamera depthCam;
 
     /*
+     * set distance of camera to the origin of the world
+     * set number of snapshots 
+     */
+    public float dist = 5F;
+    public int snapCount = 100;
+
+    /*
     * This Parameters create delegates to determine the update mode for the player
     */
     public delegate void controllerUpdate();
@@ -32,26 +39,17 @@ public class Player : SmoothMouseLook
         }
     }
 
-    void CSV()
-    {
-        if (positionList.Count > 0)
-        {
-            transform.SetPositionAndRotation(positionList[0].Item1, positionList[0].Item2);
-            //Consume the list
-            positionList.RemoveAt(0);
-            TakeSnapShot(string.Format("{0}/Snapshots/{1}_{2}_{3}", Application.dataPath, this.name, 3, positionList.Capacity - positionList.Count));
-        }
-        else
-        {
-            //return to manual mode after finishing
-            SetMode(0);
-        }
-    }
 
     void Auto()
     {
-        //TODO 
+        ConsumePosList(2);
     }
+
+    void CSV()
+    {
+        ConsumePosList(3);
+    }
+
 
     public void SetMode(int mode)
     {
@@ -62,10 +60,11 @@ public class Player : SmoothMouseLook
                 break;
             case 1:
                 update = Auto;
+                InitialPositionListRandom();
                 break;
             case 2:
                 update = CSV;
-                InitialPositionList();
+                InitialPositionListCSV();
                 break;
             default:
                 break;
@@ -73,8 +72,27 @@ public class Player : SmoothMouseLook
         
     }
 
+    void InitialPositionListRandom()
+    {
+        
+        positionList = new List<Tuple<Vector3, Quaternion>>(10);
+        System.Random rnd = new System.Random();
+        while (snapCount > 0)
+        {
+            //Randomize rotation imagine the camera look down from top, then rotate according to the angle randomized
+            Quaternion attd = Quaternion.Euler(rnd.Next() % 90 - 90, rnd.Next() % 360, rnd.Next() % 180 - 90);
+            attd.Normalize();
+            Vector3 pos = attd * Vector3.up * dist;
+            attd = attd * Quaternion.Euler(90, 0, 0);
+            attd.Normalize();
+            positionList.Add(Tuple.Create(pos, attd));
+            snapCount--;
+        }
+
+    }
+
     //create list of position and attitude for snapshot from csv input
-    void InitialPositionList()
+    void InitialPositionListCSV()
     {
         //initialize the list to empty
         positionList = new List<Tuple<Vector3, Quaternion>>();
@@ -109,6 +127,22 @@ public class Player : SmoothMouseLook
 
     }
 
+    void ConsumePosList(int runMode)
+    {
+        if (positionList.Count > 0)
+        {
+            transform.SetPositionAndRotation(positionList[0].Item1, positionList[0].Item2);
+            //Consume the list
+            positionList.RemoveAt(0);
+            TakeSnapShot(string.Format("{0}/Snapshots/{1}_{2}_{3}", Application.dataPath, this.name, runMode, positionList.Capacity - positionList.Count));
+        }
+        else
+        {
+            //return to manual mode after finishing
+            SetMode(0);
+        }
+    }
+
     void TakeSnapShot(string name)
     {
         stereoSnapCam.CallTakeSnapshot(name);
@@ -116,7 +150,7 @@ public class Player : SmoothMouseLook
 
     }
 
-    private void Start()
+    new private void Start()
     {
         base.Start();
         update = Manual;

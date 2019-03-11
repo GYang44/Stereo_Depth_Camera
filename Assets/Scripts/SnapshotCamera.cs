@@ -50,8 +50,6 @@ public class SnapshotCamera : MonoBehaviour
             snapshot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
             System.IO.File.WriteAllBytes(snapShotName, snapshot.EncodeToPNG());
 
-            Debug.Log("Finish " + snapShotName);
-
             snapCam.gameObject.SetActive(false);
         }
     }
