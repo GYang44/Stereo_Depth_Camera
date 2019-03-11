@@ -5,10 +5,14 @@ using System.Collections.Generic;
 [AddComponentMenu("Camera-Control/Smooth Mouse Look")]
 public class SmoothMouseLook : MonoBehaviour {
  
+    /*
+     * This parameters handles the mouse control
+    */
+
 	public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
 	public RotationAxes axes = RotationAxes.MouseXAndY;
-	public float sensitivityX = 15F;
-	public float sensitivityY = 15F;
+	public float sensitivityX = 10F;
+	public float sensitivityY = 10F;
  
 	public float minimumX = -360F;
 	public float maximumX = 360F;
@@ -30,10 +34,11 @@ public class SmoothMouseLook : MonoBehaviour {
     public float moveSpeed = 20F;
  
 	Quaternion originalRotation;
- 
-	void Update ()
-	{
-        if (axes == RotationAxes.MouseXAndY)
+
+
+    public void Update()
+    {
+       if (axes == RotationAxes.MouseXAndY)
 		{			
 			rotAverageY = 0f;
 			rotAverageX = 0f;
@@ -70,40 +75,26 @@ public class SmoothMouseLook : MonoBehaviour {
             transform.RotateAround(transform.position, Vector3.up, rotAverageX);
 		}
 		
-
         Vector3 pos = transform.position;
 
-        if (Input.GetKey("w"))
-        {
-            pos += transform.TransformDirection(Vector3.forward * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey("s"))
-        {
-            pos += transform.TransformDirection(Vector3.back * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey("d"))
-        {
-            pos += transform.TransformDirection(Vector3.right * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey("a"))
-        {
-            pos += transform.TransformDirection(Vector3.left * moveSpeed * Time.deltaTime);
-        }
-
+        if (Input.GetKey("w")) pos += transform.TransformDirection(Vector3.forward * moveSpeed * Time.deltaTime);
+        if (Input.GetKey("s")) pos += transform.TransformDirection(Vector3.back * moveSpeed * Time.deltaTime);
+        if (Input.GetKey("d")) pos += transform.TransformDirection(Vector3.right * moveSpeed * Time.deltaTime);
+        if (Input.GetKey("a")) pos += transform.TransformDirection(Vector3.left * moveSpeed * Time.deltaTime);
 
         transform.position = pos;
 
     }
  
-	void Start ()
+	public void Start ()
 	{		
         Rigidbody rb = GetComponent<Rigidbody>();	
 		if (rb)
 			rb.freezeRotation = true;
 		originalRotation = transform.localRotation;
-	}
- 
-	public static float ClampAngle (float angle, float min, float max)
+    }
+
+    public static float ClampAngle (float angle, float min, float max)
 	{
 		angle = angle % 360;
 		if ((angle >= -360F) && (angle <= 360F)) {

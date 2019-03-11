@@ -10,10 +10,10 @@ public class StereoSnapshotCamera : MonoBehaviour
     public SnapshotCamera snapCamL;
     public SnapshotCamera snapCamR;
 
-    public void CallTakeSnapshot()
+    public void CallTakeSnapshot(string snapName)
     {
-        snapCamL.CallTakeSnapshot();
-        snapCamR.CallTakeSnapshot();
+        snapCamL.CallTakeSnapshot(snapName);
+        snapCamR.CallTakeSnapshot(snapName);
     }
 
 }

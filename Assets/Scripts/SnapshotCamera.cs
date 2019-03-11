@@ -11,6 +11,8 @@ public class SnapshotCamera : MonoBehaviour
     public int width = 1920;
     public int height = 1080;
 
+    private string snapShotName;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -29,14 +31,12 @@ public class SnapshotCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CallTakeSnapshot();
-        }
+
     }
 
-    public void CallTakeSnapshot()
+    public void CallTakeSnapshot(string inSnapShotName)
     {
+        snapShotName = string.Format("{0}_{1}.png", inSnapShotName, this.name);
         snapCam.gameObject.SetActive(true);
     }
 
@@ -48,13 +48,12 @@ public class SnapshotCamera : MonoBehaviour
             snapCam.Render();
             RenderTexture.active = snapCam.targetTexture;
             snapshot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-            System.IO.File.WriteAllBytes(SnapshotName(), snapshot.EncodeToPNG());
+            System.IO.File.WriteAllBytes(snapShotName, snapshot.EncodeToPNG());
+
+            Debug.Log("Finish " + snapShotName);
+
             snapCam.gameObject.SetActive(false);
         }
     }
 
-    string SnapshotName()
-    {
-        return string.Format("{0}/Snapshots/snap_{4}_{1}x{2}_{3}.png", Application.dataPath, width, height, System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"), this.name);
-    }
 }
