@@ -39,7 +39,7 @@ public class Player : SmoothMouseLook
             transform.SetPositionAndRotation(positionList[0].Item1, positionList[0].Item2);
             //Consume the list
             positionList.RemoveAt(0);
-            TakeSnapShot(string.Format("{0}/Snapshots/{1}_{2}_{3}", Application.dataPath, this.name, 3,positionList.Count));
+            TakeSnapShot(string.Format("{0}/Snapshots/{1}_{2}_{3}", Application.dataPath, this.name, 3, positionList.Capacity - positionList.Count));
         }
         else
         {

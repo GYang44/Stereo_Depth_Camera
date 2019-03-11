@@ -31,7 +31,7 @@ public class SmoothMouseLook : MonoBehaviour {
  
 	public float frameCounter = 20;
 
-    public float moveSpeed = 20F;
+    public float moveSpeed = 10F;
  
 	Quaternion originalRotation;
 
@@ -81,6 +81,8 @@ public class SmoothMouseLook : MonoBehaviour {
         if (Input.GetKey("s")) pos += transform.TransformDirection(Vector3.back * moveSpeed * Time.deltaTime);
         if (Input.GetKey("d")) pos += transform.TransformDirection(Vector3.right * moveSpeed * Time.deltaTime);
         if (Input.GetKey("a")) pos += transform.TransformDirection(Vector3.left * moveSpeed * Time.deltaTime);
+        if (Input.GetKey("r")) pos += Vector3.up * moveSpeed * Time.deltaTime;
+        if (Input.GetKey("f")) pos += Vector3.down * moveSpeed * Time.deltaTime;
 
         transform.position = pos;
 
